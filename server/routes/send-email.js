@@ -4,20 +4,39 @@ const nodemailer = require("nodemailer");
 const app = express();
 
 app.post("/sendemail", (req, res) => {
+    const CORREO_REGX = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/g;
     let user = req.body;
     let email = user.email;
     let name = user.name;
     let message = user.message;
 
-    if ((email === '' || email === undefined) || (name === '' || name === undefined) || (message === '' || message === undefined)) {
+    if ((name === '' || name === undefined) || (message === '' || message === undefined)) {
         return res.status(400).json({
             error: 'Formulario incompleto',
             message: 'Introduza todo los datos por favor...'
         });
     }
+    if(!CORREO_REGX.test(email)) {
+        return res.status(400).json({
+            error: 'Formulario incorrecto',
+            message: 'Correo incorrecto'
+        });
+    }
+
 
     sendMail(user, info => {
-        res.status(200).json({info});
+        if (info?.error){
+            res.status(500).json({
+                error: info.error,
+                message: info.message
+            })
+        }
+        console.log('user',user);
+        console.log('info',info);
+        res.status(200).json({
+            ok: true,
+            message: 'Correo enviado correctamente'
+        })
     });
 });
 
@@ -46,8 +65,8 @@ async function sendMail(user, callback) {
     // send mail with defined transport object
     let info = await transporter.sendMail(mailOptions, (err,info) => {
         if (err) {
-            return res.status(500).json({
-                error: err,
+            return callback({
+                error: 'Error al enviar el correo',
                 message: 'Perdón algo ha salido mal'
             });
         }
