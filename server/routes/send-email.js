@@ -1,14 +1,15 @@
+
 const express = require('express');
 const nodemailer = require("nodemailer");
 
 const app = express();
 
 app.post("/sendemail", (req, res) => {
+
     const CORREO_REGX = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/g;
     let user = req.body;
-    let email = user.email;
-    let name = user.name;
-    let message = user.message;
+    let {email, name, message} = user;
+
 
     if ((name === '' || name === undefined) || (message === '' || message === undefined)) {
         return res.status(400).json({
@@ -31,8 +32,7 @@ app.post("/sendemail", (req, res) => {
                 message: info.message
             })
         }
-        console.log('user',user);
-        console.log('info',info);
+
         res.status(200).json({
             ok: true,
             message: 'Correo enviado correctamente'
@@ -57,9 +57,9 @@ async function sendMail(user, callback) {
       from: user.email, // sender address
       to: process.env.EMAIL, // list of receivers
       subject: "Contact Final Store", // Subject line
-      html: `<h1>From ${user.email}</h1><br>
-      <h2>Name: ${user.name}</h2><br>
-      <h2>Message: ${user.message}</h2>`
+      html: `<h1>De: ${user.email}</h1><br>
+      <h2>Nombre: ${user.name}</h2><br>
+      <h2>Mensaje: ${user.message}</h2>`
     };
   
     // send mail with defined transport object

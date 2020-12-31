@@ -12,13 +12,31 @@ let verificaToken = (req, res, next) => {
                 message: 'token invalido'
             });
         }
-        
-        req.user = decoded.user;
+
+        req.usuario = decoded.usuario;
         next();
     });
 
 };
 
+// =========================
+// Verificar Admin Role
+// =========================
+let verificaAdmin_Role = (req, res, next) => {
+
+    let usuario = req.usuario;
+
+    if(usuario.role === 'ADMIN_ROLE'){
+        next();
+    }else{
+        res.status(401).json({
+            error: 'Error',
+            message: 'El usuario no es administrador'
+        })
+    }
+}
+
 module.exports = {
-    verificaToken
+    verificaToken,
+    verificaAdmin_Role
 }

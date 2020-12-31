@@ -13,10 +13,10 @@ var ordenProductoSchema = new Schema({
         ref: 'Cliente',
         required: [true, 'El ID del pagador es necesario']
     },
-    id_Producto:{
+    producto:{
         type: Schema.Types.ObjectId,
         ref: 'Producto',
-        required: [true, 'La fecha de compra es necesaria']
+        required: [true, 'El ID del producto es necesario']
     },
 
 });

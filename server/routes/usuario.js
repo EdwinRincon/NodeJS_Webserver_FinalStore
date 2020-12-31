@@ -1,6 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const Usuario = require('../models/Usuario');
+let Usuario = require('../models/Usuario');
 const { verificaToken } = require('../middlewares/autentificacion');
 const app = express();
 
@@ -17,7 +17,7 @@ app.get('/usuario/:id', verificaToken, (req, res) => {
       });
     }
     res.json({
-      ok: true,
+      success: true,
       usuario: usuarioDB
     });
   })

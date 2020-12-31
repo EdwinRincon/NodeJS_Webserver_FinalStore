@@ -8,11 +8,6 @@ let categories = {
 }
 
 var productoSchema = new Schema({
-    id_Producto: {
-        type: String,
-        unique: true,
-        required: [true, 'EL ID del producto es necesario']
-    },
     name: {
         type: String,
         unique: true,
@@ -31,7 +26,8 @@ var productoSchema = new Schema({
     },
     category: {
         type: String,
-        enum: categories
+        enum: categories,
+        required: true
     },
     available: { 
         type: Boolean, 
@@ -40,7 +36,8 @@ var productoSchema = new Schema({
     },
     user: {
         type: Schema.Types.ObjectId,
-        ref: 'Usuario'
+        ref: 'Usuario',
+        required: [true, 'El ID usuario es necesario']
     }
 });
 
