@@ -12,12 +12,21 @@ process.env.CADUCIDAD_TOKEN = '8H';
 // =========================
 process.env.SEED = process.env.SEED || 'seed-desarrollo';
 
+
+// =========================
+// Entorno
+// =========================
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
+// =========================
+// Base de Datos
+// =========================
 let urlDB;
 
-//if (process.env.NODE_ENV === 'dev') {
+if (process.env.NODE_ENV === 'development') {
     urlDB = 'mongodb://localhost:27017/finalStore';
-//}else{
-//    urlDB = "mongodb+srv://admin-user:MsMVFdCPjOyRVIkj@realmcluster.wognb.mongodb.net/finalStore?retryWrites=true&w=majority";
-//}
+}else{
+   urlDB = process.env.URLDB;
+}
 
 process.env.URLDB = urlDB;
