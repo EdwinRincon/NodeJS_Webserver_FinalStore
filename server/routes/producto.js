@@ -88,10 +88,7 @@ app.get("/producto/:name", (req, res) => {
         }
 
         let productoFilter = _.pick(productoDB, ['available', 'name', 'price', 'img', 'description', 'category']);
-        res.json({
-            success: true,
-            producto: productoFilter
-        });
+        res.json(productoFilter);
     });
 });
 
