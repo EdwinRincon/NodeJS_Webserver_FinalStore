@@ -11,7 +11,7 @@ app.get('/productos', async (req, res) => {
     let desde = req.query.desde ?? 0;
     desde = Number(desde);
 
-    let limite = req.query.limite ?? 5;
+    let limite = req.query.limite ?? 9;
     limite = Number(limite);
 
     let ordenar = req.query.ordenar ?? 'asc';
@@ -195,5 +195,13 @@ app.delete('/producto/:name', [verificaToken, verificaAdmin_Role], (req, res) =>
 
 });
 
+// GET total nº productos
+app.get('/productos/total', (req, res)=> {
+    Producto.countDocuments({}, (err, conteo) => {
+        res.json({
+          cuantos: conteo
+        });
+      });
+});
 
 module.exports = app;
