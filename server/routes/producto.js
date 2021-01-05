@@ -20,10 +20,11 @@ app.get('/productos', async (req, res) => {
     let search = req.query.search ?? '';
     search = String(search);
 
-    let category = req.query.category;
+    let category = req.query.category ?? 'undefined';
+    category = _.escape(category);
 
-
-    if (category !== undefined) {
+    
+    if (category != 'undefined' && category.length != 0) {
         var findObject = {
             $or: [
                 {
