@@ -27,7 +27,7 @@ app.post('/login', (req, res) => {
                 message: 'Usuario o contraseña incorrectos'
             });
         }
-        let usuarioFilter = _.pick(usuarioDB, ['name','email','role','_id']);
+        let usuarioFilter = _.pick(usuarioDB, ['name','email','role','_id','img']);
         // Si hay un usuario encontrado y credenciales correctas
         let token = jwt.sign(
             {

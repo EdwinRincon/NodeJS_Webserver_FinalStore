@@ -13,6 +13,10 @@ let userSchema = new Schema({
         type: String,
         required: [true,'El nombre es necesario']
     },
+    last_name: {
+        type: String,
+        required: [true,'El apellido es necesario']
+    },
     email: {
         type: String,
         unique: true,

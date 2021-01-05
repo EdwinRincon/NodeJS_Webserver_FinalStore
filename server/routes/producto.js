@@ -2,64 +2,106 @@ const express = require('express');
 const { verificaToken, verificaAdmin_Role } = require("../middlewares/autentificacion");
 let Producto = require('../models/Producto');
 const _ = require('underscore');
-let app = express();
+const app = express();
 
-// retorna todos los productos
-app.get('/productos', (req, res) => {
+
+// retorna todos los productos available = true
+app.get('/productos', async (req, res) => {
+
     let desde = req.query.desde ?? 0;
     desde = Number(desde);
 
-    Producto.find({ available: true })
+    let limite = req.query.limite ?? 5;
+    limite = Number(limite);
+
+    let ordenar = req.query.ordenar ?? 'asc';
+    ordenar = String(ordenar);
+
+    let search = req.query.search ?? '';
+    search = String(search);
+
+    let category = req.query.category;
+
+
+    if (category !== undefined) {
+        var findObject = {
+            $or: [
+                {
+                    $and: [
+                        { name: { $regex: _.escape(search), $options: 'i' } },
+                        { category: category }
+                    ]
+                },
+                {
+                    $and: [
+                        { description: { $regex: _.escape(search), $options: 'i' } },
+                        { category: category }
+                    ]
+                }
+            ]
+        };
+    } else {
+        var findObject = {
+            $or: [{
+                name: { $regex: _.escape(search), $options: 'i' }
+            }, {
+                description: { $regex: _.escape(search), $options: 'i' }
+            }]
+        };
+    }
+
+    await Producto.find(findObject)
+        .sort({ price: ordenar })
         .skip(desde)
-        .limit(5)
-        .exec((err, productos) => {
+        .limit(limite)
+        .exec((err, productosDB) => {
             if (err) {
                 return res.status(500).json({
                     error: err,
                     message: 'Ha habido un error, por favor comunicate en la zona de contacto'
                 });
             }
+            let productosFilter = productosDB.map(p => _.pick(p, ['available', 'name', 'price', 'description', 'category']));
             res.json({
-                productos
+                productos: productosFilter
             });
         })
 });
 
-app.get("/producto/:id", (req, res) => {
-    let id = req.params.id;
+// retorna un producto por su nombre
+app.get("/producto/:name", (req, res) => {
+    let name = _.escape(req.params.name);
 
-    Producto.findById(id)
-        .exec((err, productoDB) => {
-            if (err) {
-                return res.status(500).json({
-                    error: true,
-                    message: 'ID no existe'
-                });
-            }
-
-            if (!productoDB) {
-                return res.status(400).json({
-                    error: err,
-                    message: 'ID no existe'
-                });
-            }
-
-            res.json({
-                success: true,
-                producto: productoDB
+    Producto.findOne({ name }, (err, productoDB) => {
+        if (err) {
+            return res.status(500).json({
+                error: true,
+                message: 'Este producto no existe'
             });
+        }
 
+        if (!productoDB) {
+            return res.status(400).json({
+                error: true,
+                message: 'Este producto no existe'
+            });
+        }
+
+        let productoFilter = _.pick(productoDB, ['available', 'name', 'price', 'img', 'description', 'category']);
+        res.json({
+            success: true,
+            producto: productoFilter
         });
+    });
 });
 
-// CREA un producto
 app.post('/producto', verificaToken, (req, res) => {
     let body = req.body;
 
     let producto = new Producto({
-        user: req.usuario._id,
         name: body.name,
         price: body.price,
+        img: body.img,
         description: body.description,
         category: body.category,
         available: body.available
@@ -72,7 +114,7 @@ app.post('/producto', verificaToken, (req, res) => {
                 message: 'Error al guardar el producto'
             });
         }
-        let productoFilter = _.pick(productoDB,['available','name','price','description','category']);
+        let productoFilter = _.pick(productoDB, ['available', 'name', 'price', 'img', 'description', 'category']);
         res.status(201).json({
             success: true,
             producto: productoFilter,
@@ -81,11 +123,56 @@ app.post('/producto', verificaToken, (req, res) => {
     });
 });
 
-// Eliminar un producto
-app.delete('/producto/:id', [verificaToken, verificaAdmin_Role], (req, res) => {
-    let id = req.params.id;
+app.put('/producto/:name', verificaToken, (req, res) => {
+    let name = _.escape(req.params.name);
+    let body = _.pick(req.body, ['name', 'price', 'img', 'description', 'category', 'available']);
 
-    Producto.findByIdAndDelete(id, (err, productoBorrado) => {
+    Producto.findOne({ name }, (err, productoDB) => {
+        if (err) {
+            return res.status(500).json({
+                error: true,
+                message: 'Este producto no existe'
+            });
+        }
+
+        if (!productoDB) {
+            return res.status(400).json({
+                error: true,
+                message: 'Este producto no existe'
+            });
+        }
+
+        productoDB.name = body.name;
+        productoDB.price = body.price;
+        productoDB.img = body.img;
+        productoDB.description = body.description;
+        productoDB.category = body.category;
+        productoDB.available = body.available;
+
+        productoDB.save((err, productoGuardado) => {
+            if (err) {
+                return res.status(500).json({
+                    error: err,
+                    message: 'No se puede guardar el producto'
+                });
+            }
+            let productoFilter = _.pick(productoGuardado, ['available', 'name', 'price', 'description', 'category']);
+            res.json({
+                ok: true,
+                producto: productoFilter,
+                message: 'Producto actualizado'
+            });
+        });
+    });
+
+
+});
+
+// Eliminar un producto
+app.delete('/producto/:name', [verificaToken, verificaAdmin_Role], (req, res) => {
+    let name = req.params.name;
+
+    Producto.findOneAndDelete({ name }, (err, productoBorrado) => {
         if (err) {
             return res.status(500).json({
                 error: err,
@@ -93,8 +180,8 @@ app.delete('/producto/:id', [verificaToken, verificaAdmin_Role], (req, res) => {
             });
         }
         if (!productoBorrado) {
-            return res.status(500).json({
-                error: err,
+            return res.status(400).json({
+                error: true,
                 message: "Este producto no existe para borrar"
             });
         }
@@ -107,14 +194,6 @@ app.delete('/producto/:id', [verificaToken, verificaAdmin_Role], (req, res) => {
     });
 
 });
-
-
-
-
-
-
-
-
 
 
 module.exports = app;

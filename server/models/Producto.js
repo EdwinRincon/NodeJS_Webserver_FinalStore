@@ -33,11 +33,6 @@ var productoSchema = new Schema({
         type: Boolean, 
         required: true, 
         default: true 
-    },
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'Usuario',
-        required: [true, 'El ID usuario es necesario']
     }
 });
 
