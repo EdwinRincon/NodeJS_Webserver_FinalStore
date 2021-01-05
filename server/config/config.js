@@ -30,9 +30,3 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 process.env.URLDB = urlDB;
-
-// =========================
-// Base de Datos
-// =========================
-process.env.EMAIL = process.env.EMAIL ?? 'finalstore2020@gmail.com'
-process.env.PWDEMAIL = process.env.PWDEMAIL ?? '1477877266Ed'
