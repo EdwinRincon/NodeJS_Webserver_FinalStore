@@ -5,7 +5,7 @@ const _ = require('underscore');
 const app = express();
 
 
-// retorna todos los productos available = true
+// retorna Array de productos
 app.get('/productos', async (req, res) => {
 
     let desde = req.query.desde ?? 0;
@@ -63,9 +63,8 @@ app.get('/productos', async (req, res) => {
                 });
             }
             let productosFilter = productosDB.map(p => _.pick(p, ['available', 'name', 'price', 'description', 'category']));
-            res.json({
-                productos: productosFilter
-            });
+
+            res.json(productosFilter);
         })
 });
 
@@ -199,9 +198,13 @@ app.delete('/producto/:name', [verificaToken, verificaAdmin_Role], (req, res) =>
 // GET total nº productos
 app.get('/productos/total', (req, res)=> {
     Producto.countDocuments({}, (err, conteo) => {
-        res.json({
-          cuantos: conteo
-        });
+        if (err) {
+            return res.status(500).json({
+                error: 'Error',
+                message: 'No se pueden accerder a los registros'
+            })
+        }
+        res.json(conteo);
       });
 });
 
