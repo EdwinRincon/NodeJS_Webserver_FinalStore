@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const _ = require('underscore');
 let Usuario = require('../models/Usuario');
-const res = require('express/lib/response');
 const app = express();
 
 
@@ -61,7 +60,7 @@ app.get('/hasPermission', verificaToken, (req, res) => {
 });
 
 
-app.post('resetPwd',verificaTokenResetPwd, (req, res) => {
+app.post('/resetPwd',verificaTokenResetPwd, (req, res) => {
 
     let password = req.body.password;
     let id = req.usuario._id;

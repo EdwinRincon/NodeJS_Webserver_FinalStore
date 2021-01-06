@@ -94,7 +94,7 @@ app.post('/usuario', [verificaToken,verificaAdmin_Role], (req, res) => {
 
 app.put('/usuario/:email', [verificaToken, verificaAdmin_Role], async (req, res) => {
   let email = _.escape(req.params.email);
-  let body = _.pick(req.body, ['role', 'estate','name','last_name', 'email']);
+  let body = _.pick(req.body, ['role', 'estate','name','last_name', 'email','password']);
 
   Usuario.findOne({ email }, (err, usuarioDB) => {
       if (err) {
@@ -116,6 +116,7 @@ app.put('/usuario/:email', [verificaToken, verificaAdmin_Role], async (req, res)
       usuarioDB.name = body.name;
       usuarioDB.last_name = body.last_name;
       usuarioDB.email = body.email;
+      usuarioDB.password = bcrypt.hashSync(body.password, 10);
 
       usuarioDB.save((err, usuarioGuardado) => {
           if (err) {
