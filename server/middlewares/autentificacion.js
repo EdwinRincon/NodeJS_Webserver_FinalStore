@@ -18,6 +18,26 @@ let verificaToken = (req, res, next) => {
     });
 
 };
+// =========================
+// Verificar Token RESET PASSWORD
+// =========================
+let verificaTokenResetPwd = (req, res, next) => {
+    let token = req.query.token;
+
+    jwt.verify(token, process.env.SEED, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({
+                error: err,
+                message: 'token invalido'
+            });
+        }
+
+        req.usuario = decoded.usuario;
+        next();
+    });
+
+};
+
 
 // =========================
 // Verificar Admin Role
@@ -38,5 +58,6 @@ let verificaAdmin_Role = (req, res, next) => {
 
 module.exports = {
     verificaToken,
-    verificaAdmin_Role
+    verificaAdmin_Role,
+    verificaTokenResetPwd
 }
