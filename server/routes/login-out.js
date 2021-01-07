@@ -38,20 +38,20 @@ app.post('/login', (req, res) => {
             { expiresIn: process.env.CADUCIDAD_TOKEN }
         );
 
-        res.cookie('token', token, {maxAge: 28800000, httpOnly: true}).json({
-            usuario: _.pick(usuarioFilter,'email'),
-            message: 'Sesión Iniciada'
+        res.cookie('token', token, {maxAge: 28800000, httpOnly: true, secure: true}).json({
+            message: "Sesion Iniciada"
         });
     });
 });
 
-app.post('/logout',verificaToken, (req, res) => {
-    let token = req.cookies.token;
+app.post('/logout',verificaToken,(req, res) => {
+    let token = req.cookies['token'];
     if (token) {
         res.clearCookie('token').json({ 
             message: 'Sesión Cerrada'
         });
     }
+    res.send();
 });
 
 // adminGuard Angular
