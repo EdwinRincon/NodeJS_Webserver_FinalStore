@@ -8,7 +8,7 @@ const bodyParser = require('body-parser')
 const app = express()
 
 // cors-enabled
-app.use(cors({ credentials: true, origin: 'https://ecommerce-final-d64fc.web.app'}));
+app.use(cors());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
