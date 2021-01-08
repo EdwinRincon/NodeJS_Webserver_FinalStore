@@ -40,8 +40,7 @@ app.post('/login', (req, res) => {
 
         res.cookie('token', token, {
             maxAge: 3600,
-            httpOnly: false,
-            domain: 'ecommerce-final-d64fc.web.app'
+            httpOnly: false
         }).json({
             usuario: _.pick(usuarioFilter, 'email'),
             message: 'Sesión Iniciada'
