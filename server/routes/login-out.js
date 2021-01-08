@@ -11,24 +11,24 @@ const app = express();
 app.post('/login', (req, res) => {
     let body = req.body;
 
-    Usuario.findOne({email: body.email}, (err, usuarioDB) => {
+    Usuario.findOne({ email: body.email }, (err, usuarioDB) => {
         if (err) {
             return res.status(400).json({
                 error: err,
                 message: 'No se ha podido completar el login'
             })
         }
-        if(!usuarioDB){
+        if (!usuarioDB) {
             return res.status(400).json({
                 message: 'Usuario o contraseña incorrectos'
             });
         }
-        if(!bcrypt.compareSync(body.password, usuarioDB.password)){
+        if (!bcrypt.compareSync(body.password, usuarioDB.password)) {
             return res.status(400).json({
                 message: 'Usuario o contraseña incorrectos'
             });
         }
-        let usuarioFilter = _.pick(usuarioDB, ['name','email','role','img']);
+        let usuarioFilter = _.pick(usuarioDB, ['name', 'email', 'role', 'img']);
         // Si hay un usuario encontrado y credenciales correctas
         let token = jwt.sign(
             {
@@ -38,17 +38,22 @@ app.post('/login', (req, res) => {
             { expiresIn: process.env.CADUCIDAD_TOKEN }
         );
 
-        res.cookie('token', token, {maxAge: 3600, httpOnly: true, secure: true, path: 'https://ecommerce-final-d64fc.web.app/'}).json({
-            usuario: _.pick(usuarioFilter,'email'),
+        res.cookie('token', token, {
+            maxAge: 3600,
+            httpOnly: true,
+            secure: true,
+            domain: 'https://ecommerce-final-d64fc.web.app/'
+        }).json({
+            usuario: _.pick(usuarioFilter, 'email'),
             message: 'Sesión Iniciada'
         });
     });
 });
 
-app.post('/logout',verificaToken, (req, res) => {
+app.post('/logout', verificaToken, (req, res) => {
     let token = req.cookies.token;
     if (token) {
-        res.clearCookie('token').json({ 
+        res.clearCookie('token').json({
             message: 'Sesión Cerrada'
         });
     }
@@ -60,12 +65,12 @@ app.get('/hasPermission', verificaToken, (req, res) => {
 });
 
 
-app.post('/resetPwd',verificaTokenResetPwd, (req, res) => {
+app.post('/resetPwd', verificaTokenResetPwd, (req, res) => {
 
     let password = req.body.password;
     let id = req.usuario._id;
 
-    Usuario.findByIdAndUpdate(id,{password}, (err, usuarioActualizado) => {
+    Usuario.findByIdAndUpdate(id, { password }, (err, usuarioActualizado) => {
         if (err) {
             return res.status(500).json({
                 error: err,
@@ -90,14 +95,14 @@ app.post('/resetPwd',verificaTokenResetPwd, (req, res) => {
 app.post('/forgot', (req, res) => {
     let body = req.body;
 
-    Usuario.findOne({email: _.escape(body.email)}, (err, usuarioDB) => {
+    Usuario.findOne({ email: _.escape(body.email) }, (err, usuarioDB) => {
         if (err) {
             return res.status(400).json({
                 error: err,
                 message: 'No se ha podido completar el login'
             })
         }
-        if(!usuarioDB){
+        if (!usuarioDB) {
             return res.status(400).json({
                 message: 'Usuario o contraseña incorrectos'
             });
@@ -112,14 +117,14 @@ app.post('/forgot', (req, res) => {
             { expiresIn: process.env.CADUCIDAD_TOKEN }
         );
 
-        sendMailResetPwd(body.email, token, info =>{
-            if (info?.error){
+        sendMailResetPwd(body.email, token, info => {
+            if (info?.error) {
                 res.status(500).json({
                     error: info.error,
                     message: info.message
                 })
             }
-    
+
             res.status(200).json({
                 ok: true,
                 message: 'Correo enviado correctamente'
@@ -131,16 +136,16 @@ app.post('/forgot', (req, res) => {
 
 async function sendMailResetPwd(email, token, callback) {
     // create reusable transporter object using the default SMTP transport
-    let transporter =await nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false, // true for 465, false for other ports
-      auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PWDEMAIL
-      }
+    let transporter = await nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false, // true for 465, false for other ports
+        auth: {
+            user: process.env.EMAIL,
+            pass: process.env.PWDEMAIL
+        }
     });
-  
+
     let mailOptions = {
         from: process.env.EMAIL, // sender address
         to: email, // list of receivers
@@ -152,7 +157,7 @@ async function sendMailResetPwd(email, token, callback) {
     };
 
     // send mail with defined transport object
-    let info = await transporter.sendMail(mailOptions, (err,info) => {
+    let info = await transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
             return callback({
                 error: 'Error al enviar el correo',
@@ -160,9 +165,9 @@ async function sendMailResetPwd(email, token, callback) {
             });
         }
     });
-  
+
     callback(info);
-  
+
 
 }
 
