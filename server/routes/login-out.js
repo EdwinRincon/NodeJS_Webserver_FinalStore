@@ -42,7 +42,7 @@ app.post('/login', (req, res) => {
             maxAge: 3600,
             httpOnly: true,
             secure: true,
-            domain: 'https://ecommerce-final-d64fc.web.app/'
+            domain: 'ecommerce-final-d64fc.web.app'
         }).json({
             usuario: _.pick(usuarioFilter, 'email'),
             message: 'Sesión Iniciada'
