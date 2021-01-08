@@ -40,7 +40,7 @@ app.post('/login', (req, res) => {
 
         res.cookie('token', token, {
             maxAge: 3600,
-            httpOnly: true,
+            httpOnly: false,
             secure: true,
             domain: 'ecommerce-final-d64fc.web.app'
         }).json({
