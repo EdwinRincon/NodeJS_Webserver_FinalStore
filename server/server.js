@@ -3,16 +3,16 @@ require('./config/config');
 const express = require('express')
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser')
+const app = express()
 
 // cors-enabled
-app.use(cors())
+app.use(cors());
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 // cookie log/logout user
 app.use(cookieParser());
 
@@ -33,4 +33,4 @@ mongoose.connect(uri, {
 
 app.listen(process.env.PORT, () => {
   console.log(`API REST listening at http://localhost:${process.env.PORT}`)
-})
+});

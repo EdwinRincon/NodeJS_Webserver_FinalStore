@@ -38,7 +38,7 @@ app.post('/login', (req, res) => {
             { expiresIn: process.env.CADUCIDAD_TOKEN }
         );
 
-        res.cookie('token', token, {maxAge: 28800000, httpOnly: true}).json({
+        res.cookie('token', token, {maxAge: 3600, httpOnly: true, secure: true}).json({
             usuario: _.pick(usuarioFilter,'email'),
             message: 'Sesión Iniciada'
         });
