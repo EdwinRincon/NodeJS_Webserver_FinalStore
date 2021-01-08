@@ -38,7 +38,7 @@ app.post('/login', (req, res) => {
             { expiresIn: process.env.CADUCIDAD_TOKEN }
         );
 
-        res.cookie('token', token, {maxAge: 3600, httpOnly: true, secure: true}).json({
+        res.cookie('token', token, {maxAge: 3600, httpOnly: true, secure: true, path: 'https://ecommerce-final-d64fc.web.app/'}).json({
             usuario: _.pick(usuarioFilter,'email'),
             message: 'Sesión Iniciada'
         });
