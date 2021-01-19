@@ -8,16 +8,21 @@ const bodyParser = require('body-parser')
 const app = express()
 
 // cors-enabled
-app.use(cors({ credentials: true }));
+app.use(cors({origin: 'https://final-store-nws.herokuapp.com'}));
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 // cookie log/logout user
 app.use(cookieParser());
-
 // Configuracion global de rutas
 app.use(require('./routes/index'));
+
+// archivos estaticos
+app.use(express.static('public/final-store'));
+app.set('view engine', 'html');
+app.get('/', (req, res) => res.render('index'));
+
 
 const uri = process.env.URLDB;
 
@@ -28,7 +33,7 @@ mongoose.connect(uri, {
     useCreateIndex: true
   },(err) => {
     if ( err ) throw err;
-    console.log('base de datos ONLINE', uri);
+    console.log('base de datos ONLINE');
   }); 
 
 app.listen(process.env.PORT, () => {

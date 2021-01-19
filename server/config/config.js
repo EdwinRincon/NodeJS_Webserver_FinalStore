@@ -18,6 +18,16 @@ process.env.SEED = process.env.SEED || 'seed-desarrollo';
 // =========================
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
+
+
+
+
+
+// =========================
+// Entorno
+// =========================
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
 // =========================
 // Base de Datos
 // =========================
@@ -30,3 +40,10 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 process.env.URLDB = urlDB;
+
+
+
+process.env.EMAIL = process.env.EMAIL ?? 'finalstore2020@gmail.com'
+process.env.PWDEMAIL = process.env.PWDEMAIL ?? '1477877266Ed'
+
+

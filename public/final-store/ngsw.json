@@ -1,0 +1,148 @@
+{
+  "configVersion": 1,
+  "timestamp": 1611092037214,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "urls": [
+        "/10-es2020.9278b36730446c1b205b.js",
+        "/10-es5.9278b36730446c1b205b.js",
+        "/11-es2020.5323a1f499696f626002.js",
+        "/11-es5.5323a1f499696f626002.js",
+        "/12-es2020.17bbca2dd65d4daf9638.js",
+        "/12-es5.17bbca2dd65d4daf9638.js",
+        "/13-es2020.8ed7da3843a7eabb0971.js",
+        "/13-es5.8ed7da3843a7eabb0971.js",
+        "/6-es2020.512268dddedd36d54d00.js",
+        "/6-es5.512268dddedd36d54d00.js",
+        "/7-es2020.51bd9ff6b24283508682.js",
+        "/7-es5.51bd9ff6b24283508682.js",
+        "/8-es2020.d9912ada05f4ca9beb9c.js",
+        "/8-es5.d9912ada05f4ca9beb9c.js",
+        "/9-es2020.65772bf13aa9c59d4213.js",
+        "/9-es5.65772bf13aa9c59d4213.js",
+        "/common-es2020.c848515cce2a11bf2f06.js",
+        "/common-es5.c848515cce2a11bf2f06.js",
+        "/favicon.ico",
+        "/firebase-messaging-sw.js",
+        "/index.html",
+        "/main-es2020.e699bf17de5592b70dcc.js",
+        "/main-es5.e699bf17de5592b70dcc.js",
+        "/manifest.webmanifest",
+        "/polyfills-es2020.0ed4e5313a48d5aed4f8.js",
+        "/polyfills-es5.a47da67aa9106f424095.js",
+        "/runtime-es2020.50b440833a86b2e6652c.js",
+        "/runtime-es5.50b440833a86b2e6652c.js",
+        "/styles.069090367ea11837482d.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "urls": [
+        "/assets/icons/icon-128x128.png",
+        "/assets/icons/icon-144x144.png",
+        "/assets/icons/icon-152x152.png",
+        "/assets/icons/icon-180x180.png",
+        "/assets/icons/icon-192x192.png",
+        "/assets/icons/icon-200x200.png",
+        "/assets/icons/icon-384x384.png",
+        "/assets/icons/icon-512x512.png",
+        "/assets/icons/icon-72x72.png",
+        "/assets/icons/icon-96x96.png",
+        "/assets/images/banner-1.jpg",
+        "/assets/images/banner-2.jpg",
+        "/assets/images/banner-3.jpg",
+        "/assets/images/bg-form.jpg",
+        "/assets/images/logo.png",
+        "/assets/images/not-found.gif",
+        "/bg-form.a7174216ced9ddfd9193.jpg"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "api",
+      "patterns": [
+        "https:\\/\\/final-store-nws\\.herokuapp\\.com"
+      ],
+      "strategy": "freshness",
+      "maxSize": 2,
+      "maxAge": 900000,
+      "timeoutMs": 2000,
+      "version": 1
+    }
+  ],
+  "hashTable": {
+    "/10-es2020.9278b36730446c1b205b.js": "9bbf04dda3fa1b4fe4bf5ffe3e39a97dc41d1757",
+    "/10-es5.9278b36730446c1b205b.js": "b13bbc6ff4af2a2f4c9fd762136d6e2e98f49294",
+    "/11-es2020.5323a1f499696f626002.js": "11979b52b9b7f73fdb4a3b8c92798992bde51add",
+    "/11-es5.5323a1f499696f626002.js": "39f9c88a4c033f7f006c5c33aa0b80bb1cd7d117",
+    "/12-es2020.17bbca2dd65d4daf9638.js": "02c594b0811f0da7f8ff79c878eade9630bdc641",
+    "/12-es5.17bbca2dd65d4daf9638.js": "cb190ec851cd87df39a95d44dd37c41634b16658",
+    "/13-es2020.8ed7da3843a7eabb0971.js": "94eb179c7f27da595974ec01092b41ffa07f2647",
+    "/13-es5.8ed7da3843a7eabb0971.js": "58214daf737d92734540943d19fbd2c6cee976e2",
+    "/6-es2020.512268dddedd36d54d00.js": "c3dbd14483ca4e9e5c109e5dc2924e62b3bb41c4",
+    "/6-es5.512268dddedd36d54d00.js": "c3dbd14483ca4e9e5c109e5dc2924e62b3bb41c4",
+    "/7-es2020.51bd9ff6b24283508682.js": "e362d7cc500416272347c7bb1c86d0403c5375a6",
+    "/7-es5.51bd9ff6b24283508682.js": "6fd853c79971dea4a74eddde790292e74ddafcf5",
+    "/8-es2020.d9912ada05f4ca9beb9c.js": "00d545237ec7c2d1e40ee54e9f6dcc4e654cc2ac",
+    "/8-es5.d9912ada05f4ca9beb9c.js": "aa8b6fcbfd468ae5d6f45f2b92d729fefc53d704",
+    "/9-es2020.65772bf13aa9c59d4213.js": "1382b0244f6f93f798bf2a5c6862d07f6561f134",
+    "/9-es5.65772bf13aa9c59d4213.js": "015bdb80f65498043eeb2c2a12141e2d91d7f805",
+    "/assets/icons/icon-128x128.png": "df1fb60b5d198d3f88f32986ede16f2a22b24350",
+    "/assets/icons/icon-144x144.png": "13d8e64d05a00faf090991abcba4d6352b7bd79e",
+    "/assets/icons/icon-152x152.png": "07b7ba503f168c9a22a4ec10e79ccbdec2ab3297",
+    "/assets/icons/icon-180x180.png": "c9a868e8139c7e9be4ff9f9745a42c68268a793b",
+    "/assets/icons/icon-192x192.png": "d4d6abf4cc13abb9b5ea1b599cd5a3789c611527",
+    "/assets/icons/icon-200x200.png": "40dd86964f22402d2b679508dda096b5905001b9",
+    "/assets/icons/icon-384x384.png": "293f0f63129ff40aef68866f68c4a9fa620ac2d6",
+    "/assets/icons/icon-512x512.png": "4d313b499e0b152943cdd3d2e0133062a4bde812",
+    "/assets/icons/icon-72x72.png": "daf126bd352efabe1f75f60b97b63f82b7485ca0",
+    "/assets/icons/icon-96x96.png": "175b5c9edc36b9f8b43cdcad1c9fc9d6095cf2c1",
+    "/assets/images/banner-1.jpg": "125c1fec5d14eebb70dfa37e492f759a6e3acba4",
+    "/assets/images/banner-2.jpg": "9ee7bb45d17317972b59c4291e70cf96e3f0ba78",
+    "/assets/images/banner-3.jpg": "bcc0274219e490225bf9a47ab0233f69871d0379",
+    "/assets/images/bg-form.jpg": "2ca89549589e8d90e97740dbd4a1ce74bf76c778",
+    "/assets/images/logo.png": "91c758ab89591a426e9aa808cd8c8e67bf86da14",
+    "/assets/images/not-found.gif": "f70447cd5c44c4f791113c921956ac1365a61cb1",
+    "/bg-form.a7174216ced9ddfd9193.jpg": "2ca89549589e8d90e97740dbd4a1ce74bf76c778",
+    "/common-es2020.c848515cce2a11bf2f06.js": "46693e735ddd29170a7f679352a4b3e88a97ea8b",
+    "/common-es5.c848515cce2a11bf2f06.js": "ff477b5fb7a27de6bccb668b7e5c136f66f68c05",
+    "/favicon.ico": "2e9d28e054d71bad3bf5aa1e9acd432bb4d0e9a3",
+    "/firebase-messaging-sw.js": "ed6eb0d878ba2d894b303b69ad06dab1a5e74483",
+    "/index.html": "6a67d90865c5398282d0760f93eff4f93deaec16",
+    "/main-es2020.e699bf17de5592b70dcc.js": "4878dcac7d57618282dc997e035dcb034566f496",
+    "/main-es5.e699bf17de5592b70dcc.js": "5339f0674a00bb396c3086ab745f7bbb5608c4be",
+    "/manifest.webmanifest": "e7b23f6e16c510695f654fc31b3ec2fa694bea42",
+    "/polyfills-es2020.0ed4e5313a48d5aed4f8.js": "15a133b6cbb459a66fcd2e75f6aa25782e5d79c4",
+    "/polyfills-es5.a47da67aa9106f424095.js": "6fb9b275d5f1484215fde72ba3f10480fa9692a8",
+    "/runtime-es2020.50b440833a86b2e6652c.js": "8f553774882c6235f0a2dc9d2f4a1222c1cbb31e",
+    "/runtime-es5.50b440833a86b2e6652c.js": "f386baeb0246a1599ff18fe711a09038acab8bec",
+    "/styles.069090367ea11837482d.css": "fe0c3e9c262c60260fb54aefa5a84595cfd77748"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ]
+}

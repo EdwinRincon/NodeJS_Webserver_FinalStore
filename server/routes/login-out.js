@@ -9,9 +9,10 @@ const app = express();
 
 
 app.post('/login', (req, res) => {
-    let body = req.body;
+    let email = req.body.email;
+    let password = req.body.password;
 
-    Usuario.findOne({ email: body.email }, (err, usuarioDB) => {
+    Usuario.findOne({ email: _.escape(email) }, (err, usuarioDB) => {
         if (err) {
             return res.status(400).json({
                 error: err,
@@ -23,7 +24,7 @@ app.post('/login', (req, res) => {
                 message: 'Usuario o contraseña incorrectos'
             });
         }
-        if (!bcrypt.compareSync(body.password, usuarioDB.password)) {
+        if (!bcrypt.compareSync(_.escape(password), usuarioDB.password)) {
             return res.status(400).json({
                 message: 'Usuario o contraseña incorrectos'
             });
@@ -38,11 +39,7 @@ app.post('/login', (req, res) => {
             { expiresIn: process.env.CADUCIDAD_TOKEN }
         );
 
-        res.cookie('token', token, {
-            maxAge: 3600,
-            httpOnly: false
-        }).json({
-            usuario: _.pick(usuarioFilter, 'email'),
+        res.cookie('token', token, {maxAge: 28800000, httpOnly: true, domain:'api-finalstore.herokuapp.com', secure: true}).json({
             message: 'Sesión Iniciada'
         });
     });
@@ -65,8 +62,8 @@ app.get('/hasPermission', verificaToken, (req, res) => {
 
 app.post('/resetPwd', verificaTokenResetPwd, (req, res) => {
 
-    let password = req.body.password;
-    let id = req.usuario._id;
+    let password = _.escape(req.body.password);
+    let id = _.escape(req.usuario._id);
 
     Usuario.findByIdAndUpdate(id, { password }, (err, usuarioActualizado) => {
         if (err) {
@@ -150,7 +147,7 @@ async function sendMailResetPwd(email, token, callback) {
         subject: "Reset Password Request", // Subject line
         text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
             'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-            `https://ecommerce-final-d64fc.web.app/reset?token=${token}` +
+            `https://ecommerce-final-d64fc.web.app/change?token=${token}` +
             'If you did not request this, please ignore this email and your password will remain unchanged.\n'
     };
 
