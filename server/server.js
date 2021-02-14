@@ -8,7 +8,7 @@ const bodyParser = require('body-parser')
 const app = express()
 
 // cors-enabled
-app.use(cors({origin: 'https://final-store-nws.herokuapp.com'}));
+app.use(cors({origin: ['https://final-store-nws.herokuapp.com','http://localhost:4200']}));
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
@@ -17,12 +17,6 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 // Configuracion global de rutas
 app.use(require('./routes/index'));
-
-// archivos estaticos
-app.use(express.static('public/final-store'));
-app.set('view engine', 'html');
-app.get('/', (req, res) => res.render('index'));
-
 
 const uri = process.env.URLDB;
 
