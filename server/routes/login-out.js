@@ -39,7 +39,7 @@ app.post('/login', (req, res) => {
             { expiresIn: process.env.CADUCIDAD_TOKEN }
         );
 
-        res.cookie('token', token, {maxAge: 28800000, httpOnly: true, domain:'api-finalstore.herokuapp.com', secure: true}).json({
+        res.cookie('token', token, {maxAge: 28800000, httpOnly: true, secure: true}).json({
             message: 'Sesión Iniciada'
         });
     });

@@ -17,7 +17,7 @@ var productoSchema = new Schema({
         type: Number,
         required: [true, 'El precio es necesario']
     },
-    img: {
+    image: {
         type: String,
         required: false
     },

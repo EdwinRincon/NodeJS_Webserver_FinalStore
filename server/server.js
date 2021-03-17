@@ -3,16 +3,16 @@ require('./config/config');
 const express = require('express')
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-const cors = require('cors')
-const bodyParser = require('body-parser')
+const cors = require('cors');
+const bodyParser = require('body-parser');
 const app = express()
 
 // cors-enabled
-app.use(cors({origin: ['https://final-store-nws.herokuapp.com','http://localhost:4200']}));
+app.use(cors({origin: ['https://ecommerce-final-d64fc.web.app','http://localhost:4200']}));
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
 // parse application/json
-app.use(bodyParser.json());
+app.use(express.json());
 // cookie log/logout user
 app.use(cookieParser());
 // Configuracion global de rutas

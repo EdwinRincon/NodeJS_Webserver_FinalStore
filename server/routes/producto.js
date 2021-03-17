@@ -62,7 +62,7 @@ app.get('/productos', async (req, res) => {
                     message: 'Ha habido un error, por favor comunicate en la zona de contacto'
                 });
             }
-            let productosFilter = productosDB.map(p => _.pick(p, ['available', 'name', 'price', 'description', 'category']));
+            let productosFilter = productosDB.map(p => _.pick(p, ['available', 'name', 'price', 'description', 'category','image']));
 
             res.json(productosFilter);
         })
