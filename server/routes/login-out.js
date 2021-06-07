@@ -1,5 +1,5 @@
 const express = require('express');
-const { verificaToken, verificaTokenResetPwd } = require("../middlewares/autentificacion");
+const { verificaTokenResetPwd } = require("../middlewares/autentificacion");
 const nodemailer = require("nodemailer");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -29,7 +29,7 @@ app.post('/login', (req, res) => {
                 message: 'Usuario o contraseña incorrectos'
             });
         }
-        let usuarioFilter = _.pick(usuarioDB, ['name', 'email', 'role', 'img']);
+        let usuarioFilter = _.pick(usuarioDB, ['name', 'email', 'role', 'image']);
         // Si hay un usuario encontrado y credenciales correctas
         let token = jwt.sign(
             {
@@ -39,24 +39,31 @@ app.post('/login', (req, res) => {
             { expiresIn: process.env.CADUCIDAD_TOKEN }
         );
 
-        res.cookie('token', token, {maxAge: 28800000, httpOnly: true, secure: true}).json({
+        res.cookie('token', token, { maxAge: 28800000, httpOnly: true, secure: true, sameSite: true }).status(200).json({
             message: 'Sesión Iniciada'
         });
     });
 });
 
-app.post('/logout', verificaToken, (req, res) => {
-    let token = req.cookies.token;
-    if (token) {
-        res.clearCookie('token').json({
-            message: 'Sesión Cerrada'
-        });
-    }
+app.post('/logout', (_req, res) => {
+    res.clearCookie('token').status(200).json({
+        message: 'Sesión Cerrada'
+    });
 });
 
 // adminGuard Angular
-app.get('/hasPermission', verificaToken, (req, res) => {
-    res.status(200).json(true);
+app.get('/hasPermission', (req, res) => {
+    let token = req.cookies.token;
+
+    jwt.verify(token, process.env.SEED, (err, _decoded) => {
+        if (err) {
+            return res.status(200).json(false);
+        } else {
+            return res.status(200).json(true);
+        }
+    });
+
+
 });
 
 

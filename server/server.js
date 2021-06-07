@@ -4,11 +4,11 @@ const express = require('express')
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const bodyParser = require('body-parser');
+const path = require('path');
 const app = express()
 
 // cors-enabled
-app.use(cors({origin: ['https://ecommerce-final-d64fc.web.app','http://localhost:4200']}));
+app.use(cors());
 // parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: false }));
 // parse application/json
@@ -18,6 +18,8 @@ app.use(cookieParser());
 // Configuracion global de rutas
 app.use(require('./routes/index'));
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 const uri = process.env.URLDB;
 
 mongoose.connect(uri, {
@@ -26,7 +28,7 @@ mongoose.connect(uri, {
     useFindAndModify: false,
     useCreateIndex: true
   },(err) => {
-    if ( err ) throw err;
+    if ( err ) throw new Error(err);
     console.log('base de datos ONLINE');
   }); 
 

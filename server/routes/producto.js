@@ -6,7 +6,7 @@ const app = express();
 
 
 // retorna Array de productos
-app.get('/productos', async (req, res) => {
+app.get('/productos', (req, res) => {
 
     let desde = req.query.desde ?? 0;
     desde = Number(desde);
@@ -51,7 +51,7 @@ app.get('/productos', async (req, res) => {
         };
     }
 
-    await Producto.find(findObject)
+    Producto.find(findObject)
         .sort({ price: ordenar })
         .skip(desde)
         .limit(limite)
@@ -62,7 +62,7 @@ app.get('/productos', async (req, res) => {
                     message: 'Ha habido un error, por favor comunicate en la zona de contacto'
                 });
             }
-            let productosFilter = productosDB.map(p => _.pick(p, ['available', 'name', 'price', 'description', 'category','image']));
+            let productosFilter = productosDB.map(p => _.pick(p, ['available', 'name', 'price', 'description', 'category', 'image']));
 
             res.json(productosFilter);
         })
@@ -87,7 +87,7 @@ app.get("/producto/:name", (req, res) => {
             });
         }
 
-        let productoFilter = _.pick(productoDB, ['available', 'name', 'price', 'img', 'description', 'category']);
+        let productoFilter = _.pick(productoDB, ['available', 'name', 'price', 'description', 'category','image']);
         res.json(productoFilter);
     });
 });
@@ -98,7 +98,7 @@ app.post('/producto', verificaToken, (req, res) => {
     let producto = new Producto({
         name: body.name,
         price: body.price,
-        img: body.img,
+        image: body.image,
         description: body.description,
         category: body.category,
         available: body.available
@@ -111,7 +111,7 @@ app.post('/producto', verificaToken, (req, res) => {
                 message: 'Error al guardar el producto'
             });
         }
-        let productoFilter = _.pick(productoDB, ['available', 'name', 'price', 'img', 'description', 'category']);
+        let productoFilter = _.pick(productoDB, ['available', 'name', 'price', 'image', 'description', 'category']);
         res.status(201).json({
             success: true,
             producto: productoFilter,
@@ -120,9 +120,9 @@ app.post('/producto', verificaToken, (req, res) => {
     });
 });
 
-app.put('/producto/:name', verificaToken, (req, res) => {
+app.put('/producto/:name', [verificaToken, verificaAdmin_Role], (req, res) => {
     let name = _.escape(req.params.name);
-    let body = _.pick(req.body, ['name', 'price', 'img', 'description', 'category', 'available']);
+    let body = _.pick(req.body, ['name', 'price', 'image', 'description', 'category', 'available']);
 
     Producto.findOne({ name }, (err, productoDB) => {
         if (err) {
@@ -141,7 +141,7 @@ app.put('/producto/:name', verificaToken, (req, res) => {
 
         productoDB.name = body.name;
         productoDB.price = body.price;
-        productoDB.img = body.img;
+        productoDB.image = body.image;
         productoDB.description = body.description;
         productoDB.category = body.category;
         productoDB.available = body.available;
@@ -153,7 +153,7 @@ app.put('/producto/:name', verificaToken, (req, res) => {
                     message: 'No se puede guardar el producto'
                 });
             }
-            let productoFilter = _.pick(productoGuardado, ['available', 'name', 'price', 'description', 'category']);
+            let productoFilter = _.pick(productoGuardado, ['available', 'name', 'price', 'description','image', 'category']);
             res.json({
                 ok: true,
                 producto: productoFilter,
