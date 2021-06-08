@@ -1,14 +1,22 @@
 const Producto = require("../models/Producto");
 const _ = require("underscore");
+const { response } = require('express');
+
 
 const getProductos = async (req, res = response) => {
-  const {
+  let {
     desde = 0,
     limite = 5,
     ordenar = "asc",
     search = "",
     category = "undefined",
   } = req.query;
+
+  desde = Number(desde);
+  limite = Number(limite);
+  ordenar = String(ordenar);
+  search = String(search);
+
 
   let productos;
   if (category !== "undefined" && category.length != 0) {
@@ -71,7 +79,7 @@ const getProductos = async (req, res = response) => {
 const getProducto = (req, res = response) => {
   const NAME = _.escape(req.params.name);
 
-  Producto.findOne({ NAME }, (err, productoDB) => {
+  Producto.findOne({ name:NAME }, (err, productoDB) => {
     if (err) {
       return res.status(500).json({
         error: true,
@@ -137,7 +145,8 @@ const putProducto = (req, res = response) => {
   const NAME = _.escape(req.params.name);
   const { name, price, image, description, category, available } = req.body;
 
-  Producto.findOne({ NAME }, (err, productoDB) => {
+  console.log(NAME);
+  Producto.findOne({ name:NAME }, (err, productoDB) => {
     if (err) {
       return res.status(500).json({
         error: true,
@@ -186,7 +195,7 @@ const putProducto = (req, res = response) => {
 const deleteProducto = (req, res = response) => {
   const NAME = req.params.name;
 
-  Producto.findOneAndDelete({ NAME }, (err, productoBorrado) => {
+  Producto.findOneAndDelete({ name:NAME }, (err, productoBorrado) => {
     if (err) {
       return res.status(500).json({
         error: err,

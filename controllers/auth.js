@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const Usuario = require("../models/Usuario");
 const { sendMailResetPwd } = require('../helpers/send-email');
 const _ = require('underscore');
-
+const jwt = require('jsonwebtoken');
 
 
 const login = async (req, res = response) => {
@@ -40,9 +40,9 @@ const login = async (req, res = response) => {
       res
         .cookie("token", token, {
           maxAge: 28800000,
-          httpOnly: true,
-          secure: true,
-          sameSite: true,
+          httpOnly: false,
+          secure: false,
+          sameSite: false,
         })
         .status(200)
         .json({
