@@ -2,62 +2,58 @@ const jwt = require('jsonwebtoken');
 // =========================
 // Verificar Token
 // =========================
-let verificaToken = (req, res, next) => {
-    let token = req.cookies.token;
+const verificaToken = (req, res, next) => {
+  const token = req.cookies?.token;
 
-    jwt.verify(token, process.env.SEED, (err, decoded) => {
-        if (err) {
-            return res.status(401).json({
-                error: err,
-                message: 'token invalido'
-            });
-        }
+  jwt.verify(token, process.env.SEED, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({
+        error: err,
+        message: 'token invalido',
+      });
+    }
 
-        req.usuario = decoded.usuario;
-        next();
-    });
-
+    req.usuario = decoded.usuario;
+    next();
+  });
 };
 // =========================
 // Verificar Token RESET PASSWORD
 // =========================
-let verificaTokenResetPwd = (req, res, next) => {
-    let token = req.query.token;
+const verificaTokenResetPwd = (req, res, next) => {
+  const { token } = req.query;
 
-    jwt.verify(token, process.env.SEED, (err, decoded) => {
-        if (err) {
-            return res.status(401).json({
-                error: err,
-                message: 'token invalido'
-            });
-        }
+  jwt.verify(token, process.env.SEED, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({
+        error: err,
+        message: 'token invalido',
+      });
+    }
 
-        req.usuario = decoded.usuario;
-        next();
-    });
-
+    req.usuario = decoded.usuario;
+    next();
+  });
 };
-
 
 // =========================
 // Verificar Admin Role
 // =========================
-let verificaAdmin_Role = (req, res, next) => {
+const verificaAdminRole = (req, res, next) => {
+  const { usuario } = req?.role;
 
-    let usuario = req.usuario;
-
-    if(usuario.role === 'ADMIN_ROLE'){
-        next();
-    }else{
-        res.status(401).json({
-            error: 'Error',
-            message: 'El usuario no es administrador'
-        })
-    }
-}
+  if (usuario === 'ADMIN_ROLE') {
+    next();
+  } else {
+    res.status(401).json({
+      error: 'Error',
+      message: 'El usuario no es administrador',
+    });
+  }
+};
 
 module.exports = {
-    verificaToken,
-    verificaAdmin_Role,
-    verificaTokenResetPwd
-}
+  verificaToken,
+  verificaAdminRole,
+  verificaTokenResetPwd,
+};
