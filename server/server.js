@@ -5,7 +5,10 @@ const { dbConnection } = require('../database/databaseConfig');
 const authAPI = require('../auth/authAPI');
 const productosAPI = require('../productos/productosAPI');
 const usuariosAPI = require('../usuarios/usuariosAPI');
+const clientesAPI = require('../clientes/clientesAPI');
 const emailAPI = require('../email/emailAPI');
+const ordenesAPI = require('../ordenes/ordenesAPI');
+const ordenesProductosAPI = require('../ordenesProductos/ordenesProductosAPI');
 
 class Server {
   constructor() {
@@ -15,8 +18,11 @@ class Server {
     this.paths = {
       productos: '/productos',
       usuarios: '/usuarios',
+      clientes: '/clientes',
       auth: '/auth',
       email: '/email',
+      ordenes: '/ordenes',
+      ordenesProductos: '/ordenesProductos',
     };
 
     // Conectar BBDD
@@ -54,7 +60,10 @@ class Server {
     this.app.use(this.paths.auth, authAPI);
     this.app.use(this.paths.productos, productosAPI);
     this.app.use(this.paths.usuarios, usuariosAPI);
+    this.app.use(this.paths.clientes, clientesAPI);
     this.app.use(this.paths.email, emailAPI);
+    this.app.use(this.paths.ordenes, ordenesAPI);
+    this.app.use(this.paths.ordenesProductos, ordenesProductosAPI);
   }
 
   listen() {

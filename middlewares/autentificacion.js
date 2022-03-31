@@ -22,7 +22,6 @@ const verificaToken = (req, res, next) => {
 // =========================
 const verificaTokenResetPwd = (req, res, next) => {
   const { token } = req.query;
-
   jwt.verify(token, process.env.SEED, (err, decoded) => {
     if (err) {
       return res.status(401).json({
@@ -40,9 +39,9 @@ const verificaTokenResetPwd = (req, res, next) => {
 // Verificar Admin Role
 // =========================
 const verificaAdminRole = (req, res, next) => {
-  const { usuario } = req?.role;
+  const rol = req?.usuario?.role;
 
-  if (usuario === 'ADMIN_ROLE') {
+  if (rol === 'ADMIN_ROLE') {
     next();
   } else {
     res.status(401).json({

@@ -2,20 +2,24 @@ const { Schema, model } = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
 const OrdenProductoSchema = Schema({
-  idOrder: {
-    type: Schema.Types.ObjectId,
+  id_order: {
+    type: String,
     ref: 'Orden',
     required: [true, 'El ID de la orden es necesario'],
   },
-  payerId: {
-    type: Schema.Types.ObjectId,
+  payer_id: {
+    type: String,
     ref: 'Cliente',
     required: [true, 'El ID del pagador es necesario'],
   },
-  producto: {
-    type: Schema.Types.ObjectId,
+  name: {
+    type: String,
     ref: 'Producto',
-    required: [true, 'El ID del producto es necesario'],
+    required: [true, 'El nombre producto es necesario'],
+  },
+  cantidad: {
+    type: Number,
+    required: [true, 'Cantidad de productos comprados es necesario'],
   },
 
 });

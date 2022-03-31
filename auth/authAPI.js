@@ -1,7 +1,9 @@
 const { Router } = require('express');
 
-const { login, logout, hasPermission } = require('./authController');
-// const { verificaTokenResetPwd } = require("../middlewares/autentificacion");
+const {
+  login, logout, hasPermission, forgot, resetPwd,
+} = require('./authController');
+const { verificaTokenResetPwd } = require('../middlewares/autentificacion');
 
 const router = Router();
 
@@ -11,9 +13,7 @@ const router = Router();
 router.post('/login', login);
 router.post('/logout', logout);
 router.get('/hasPermission', hasPermission);
-
-// Check out
-// router.post('/resetPwd', verificaTokenResetPwd, resetPwd);
-// router.post('/forgot', forgot);
+router.post('/resetPwd', verificaTokenResetPwd, resetPwd);
+router.post('/forgot', forgot);
 
 module.exports = router;

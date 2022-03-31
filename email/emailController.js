@@ -19,18 +19,18 @@ const sendEmail = (req, res = response) => {
     });
   }
 
-  return sendMail(user, (info) => {
-    if (info?.error) {
-      res.status(500).json({
-        error: info.error,
-        message: info.message,
-      });
+  return sendMail(user, (callback) => {
+    if (callback) {
+      if (callback.error) {
+        return res.status(500).json(callback);
+      }
+      if (callback.ok) {
+        return res.status(200).json({
+          ok: true,
+          message: 'Correo enviado correctamente',
+        });
+      }
     }
-
-    return res.status(200).json({
-      ok: true,
-      message: 'Correo enviado correctamente',
-    });
   });
 };
 

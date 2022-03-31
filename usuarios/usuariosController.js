@@ -35,7 +35,7 @@ const getUsuarios = (req, res = response) => {
       }
       const usuariosFilter = usuariosDB.map((usr) => _.pick(usr, ['role', 'name', 'lastName', 'email']));
 
-      res.json({
+      return res.json({
         usuarios: usuariosFilter,
       });
     });
@@ -57,10 +57,7 @@ const getUsuario = async (req, res = response) => {
       'lastName',
       'email',
     ]);
-    res.json({
-      success: true,
-      usuario: usuarioFilter,
-    });
+    res.json(usuarioFilter);
   });
 };
 
@@ -87,7 +84,7 @@ const postUsuario = async (req, res = response) => {
     if (err) {
       return res.status(400).json({
         message: 'No se puede guardar el usuario',
-        error: err.message,
+        error: err.message.split(','),
       });
     }
 
@@ -130,19 +127,21 @@ const putUsuario = (req, res = response) => {
     usuarioDB.email = newEmail;
 
     if (password) {
-      password = await bcrypt.hash(password, 10).catch((err) => { console.log(err); });
+      password = await bcrypt.hash(password, 10).catch((errorCrypt) => {
+        console.log(errorCrypt);
+      });
       usuarioDB.password = password;
     }
 
-    usuarioDB.save((err, usuarioGuardado) => {
-      if (err) {
+    usuarioDB.save((errorGuardar, usuarioGuardado) => {
+      if (errorGuardar) {
         return res.status(500).json({
           error: err,
           message: 'No se puede guardar el usuario',
         });
       }
       const usuarioFilter = _.pick(usuarioGuardado, ['role', 'estate', 'name', 'lastName', 'email']);
-      res.json({
+      return res.json({
         ok: true,
         usuario: usuarioFilter,
         message: 'Usuario actualizado',
@@ -168,7 +167,7 @@ const deleteUsuario = async (req, res = response) => {
       });
     }
 
-    res.json({
+    return res.status(200).json({
       success: true,
       message: 'Usuario eliminado',
     });

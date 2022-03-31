@@ -1,15 +1,23 @@
 const nodemailer = require('nodemailer');
+const { google } = require('googleapis');
 
-function sendMail(user, callback) {
+const oAuthClient = new google.auth.OAuth2(process.env.CLIENT_ID_GMAIL,
+  process.env.SECRET_ID_GMAIL,
+  process.env.REDIRECT_URI);
+oAuthClient.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
+
+async function sendMail(user, callback) {
+  const accessToken = await oAuthClient.getAccessToken();
   // create reusable transporter object using the default SMTP transport
   const transporter = nodemailer.createTransport({
     service: 'gmail',
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // true for 465, false for other ports
     auth: {
+      type: 'OAuth2',
       user: process.env.EMAIL,
-      pass: process.env.PWDEMAIL,
+      clientId: process.env.CLIENT_ID_GMAIL,
+      clientSecret: process.env.SECRET_ID_GMAIL,
+      refreshToken: process.env.REFRESH_TOKEN,
+      accessToken,
     },
   });
 
@@ -41,14 +49,17 @@ function sendMail(user, callback) {
 
 const sendMailResetPwd = async (email, token, callback) => {
   // create reusable transporter object using the default SMTP transport
+  const accessToken = await oAuthClient.getAccessToken();
+  // create reusable transporter object using the default SMTP transport
   const transporter = nodemailer.createTransport({
     service: 'gmail',
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
     auth: {
+      type: 'OAuth2',
       user: process.env.EMAIL,
-      pass: process.env.PWDEMAIL,
+      clientId: process.env.CLIENT_ID_GMAIL,
+      clientSecret: process.env.SECRET_ID_GMAIL,
+      refreshToken: process.env.REFRESH_TOKEN,
+      accessToken,
     },
   });
 
@@ -59,8 +70,8 @@ const sendMailResetPwd = async (email, token, callback) => {
     text:
       'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n'
       + 'Please click on the following link, or paste this into your browser to complete the process:\n\n'
-      + `https://ecommerce-final-d64fc.web.app/change?token=${token}`
-      + 'If you did not request this, please ignore this email and your password will remain unchanged.\n',
+      + `https://final-store-nws.herokuapp.com/#/auth/resetPwd?token=${token}`
+      + '\nIf you did not request this, please ignore this email and your password will remain unchanged.\n',
   };
 
   // send mail with defined transport object

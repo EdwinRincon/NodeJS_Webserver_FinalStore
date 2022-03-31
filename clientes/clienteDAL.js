@@ -17,6 +17,7 @@ const ClienteSchema = Schema({
   },
   email_address: {
     type: String,
+    unique: true,
     required: [true, 'El correo es necesario'],
   },
   address_line: {
@@ -30,6 +31,14 @@ const ClienteSchema = Schema({
     type: String,
   },
 });
+
+ClienteSchema.methods.toJSON = function eliminarIDsV() {
+  const cliente = this;
+  const clienteObject = cliente.toObject();
+  delete clienteObject._id;
+  delete clienteObject.__v;
+  return clienteObject;
+};
 
 ClienteSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
 module.exports = model('Cliente', ClienteSchema);

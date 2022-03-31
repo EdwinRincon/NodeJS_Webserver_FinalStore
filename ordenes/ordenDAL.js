@@ -8,7 +8,7 @@ const OrdenSchema = Schema({
     required: [true, 'El ID de la orden es necesario'],
   },
   payer_id: {
-    type: Schema.Types.ObjectId,
+    type: String,
     ref: 'Cliente',
     required: [true, 'El ID del pagador es necesario'],
   },

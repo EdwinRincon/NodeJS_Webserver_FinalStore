@@ -4,17 +4,17 @@ const Producto = require('./productoDAL');
 
 const getProductos = async (req, res = response) => {
   let {
-    desde = 0,
-    limite = 5,
+    skip = 0,
     ordenar = 'asc',
     search = '',
+    page = 0,
   } = req.query;
   const { category = 'undefined' } = req.query;
 
-  desde = Number(desde);
-  limite = Number(limite);
+  skip = Number(skip);
   ordenar = String(ordenar);
   search = String(search);
+  page = Number(page);
 
   let productos;
   if (category !== 'undefined' && category.length !== 0) {
@@ -49,9 +49,8 @@ const getProductos = async (req, res = response) => {
 
   Producto.find(productos)
     .sort({ price: ordenar })
-    .skip(desde)
-    .limit(limite)
-    .exec((err, productosDB) => {
+    .skip(skip * page)
+    .exec(async (err, productosDB) => {
       if (err) {
         return res.status(500).json({
           error: err,
@@ -68,7 +67,7 @@ const getProductos = async (req, res = response) => {
         'image',
       ]));
 
-      return res.json(productosFilter);
+      return res.status(200).json(productosFilter);
     });
 };
 
@@ -165,10 +164,10 @@ const putProducto = (req, res = response) => {
     productoDB.category = category;
     productoDB.available = available;
 
-    return productoDB.save((err, productoGuardado) => {
-      if (err) {
+    return productoDB.save((error, productoGuardado) => {
+      if (error) {
         return res.status(500).json({
-          error: err,
+          error,
           message: 'No se puede guardar el producto',
         });
       }
@@ -206,22 +205,10 @@ const deleteProducto = (req, res = response) => {
       });
     }
 
-    res.json({
+    return res.json({
       success: true,
       message: 'Producto eliminado',
     });
-  });
-};
-
-const getTotalProductos = (req, res = response) => {
-  Producto.countDocuments({}, (err, conteo) => {
-    if (err) {
-      return res.status(500).json({
-        error: 'Error',
-        message: 'No se pueden accerder a los registros',
-      });
-    }
-    res.json(conteo);
   });
 };
 
@@ -231,5 +218,4 @@ module.exports = {
   postProducto,
   putProducto,
   deleteProducto,
-  getTotalProductos,
 };
