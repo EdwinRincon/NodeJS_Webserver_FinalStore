@@ -2,6 +2,7 @@ const { response } = require('express');
 const _ = require('underscore');
 const bcrypt = require('bcrypt');
 const Usuario = require('./usuarioDAL');
+const { mapMongoError } = require('../database/errorMapper');
 
 const getUsuarios = (req, res = response) => {
   let {
@@ -82,6 +83,12 @@ const postUsuario = async (req, res = response) => {
 
   usuario.save((err, usuarioDB) => {
     if (err) {
+      const mappedError = mapMongoError(err);
+      if (mappedError) {
+        return res.status(mappedError.status).json({
+          message: mappedError.message,
+        });
+      }
       return res.status(400).json({
         message: 'No se puede guardar el usuario',
         error: err.message.split(','),
@@ -135,8 +142,14 @@ const putUsuario = (req, res = response) => {
 
     usuarioDB.save((errorGuardar, usuarioGuardado) => {
       if (errorGuardar) {
+        const mappedError = mapMongoError(errorGuardar);
+        if (mappedError) {
+          return res.status(mappedError.status).json({
+            message: mappedError.message,
+          });
+        }
         return res.status(500).json({
-          error: err,
+          error: errorGuardar,
           message: 'No se puede guardar el usuario',
         });
       }

@@ -1,6 +1,7 @@
 const _ = require('underscore');
 const { response } = require('express');
 const Orden = require('./ordenDAL');
+const { mapMongoError } = require('../database/errorMapper');
 
 const getOrdenes = async (req, res = response) => {
   let {
@@ -45,6 +46,12 @@ const postOrdenes = async (req, res = response) => {
 
   orden.save((err, ordenDB) => {
     if (err) {
+      const mappedError = mapMongoError(err);
+      if (mappedError) {
+        return res.status(mappedError.status).json({
+          message: mappedError.message,
+        });
+      }
       return res.status(400).json({
         error: err,
         message: 'Error al guardar la orden',

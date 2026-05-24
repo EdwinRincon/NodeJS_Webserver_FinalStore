@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
 
 const OrdenSchema = Schema({
   id_order: {
@@ -18,5 +17,4 @@ const OrdenSchema = Schema({
   },
 });
 
-OrdenSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
-module.exports = model('Orden', OrdenSchema);
+

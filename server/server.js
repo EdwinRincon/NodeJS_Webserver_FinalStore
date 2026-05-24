@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { dbConnection } = require('../database/databaseConfig');
+const { mapMongoError } = require('../database/errorMapper');
 const authAPI = require('../auth/authAPI');
 const productosAPI = require('../productos/productosAPI');
 const usuariosAPI = require('../usuarios/usuariosAPI');
@@ -64,6 +65,25 @@ class Server {
     this.app.use(this.paths.email, emailAPI);
     this.app.use(this.paths.ordenes, ordenesAPI);
     this.app.use(this.paths.ordenesProductos, ordenesProductosAPI);
+
+    // Global error handler middleware for MongoDB errors
+    // Must be registered after all other routes/middlewares
+    this.app.use((err, req, res, next) => {
+      const mappedError = mapMongoError(err);
+
+      if (mappedError) {
+        return res.status(mappedError.status).json({
+          message: mappedError.message,
+        });
+      }
+
+      // If error was not mapped, send generic server error
+      if (!res.headersSent) {
+        res.status(err.status || 500).json({
+          message: err.message || 'Error interno del servidor',
+        });
+      }
+    });
   }
 
   listen() {

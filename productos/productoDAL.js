@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
 
 const categories = {
   values: ['auriculares', 'moviles', 'ordenadores', 'relojes', 'televisores'],
@@ -35,5 +34,4 @@ const ProductoSchema = Schema({
   },
 });
 
-ProductoSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
-module.exports = model('Producto', ProductoSchema);
+

@@ -1,6 +1,7 @@
 const { response } = require('express');
 const _ = require('underscore');
 const Cliente = require('./clienteDAL');
+const { mapMongoError } = require('../database/errorMapper');
 
 const getClientes = async (req, res = response) => {
   let {
@@ -67,6 +68,12 @@ const postCliente = async (req, res = response) => {
     upsert: true, // Make this update into an upsert
   }, (err, clienteDB) => {
     if (err) {
+      const mappedError = mapMongoError(err);
+      if (mappedError) {
+        return res.status(mappedError.status).json({
+          message: mappedError.message,
+        });
+      }
       return res.status(400).json({
         error: err.message.split(','),
         message: 'No se puede guardar el cliente',
@@ -112,8 +119,14 @@ const putCliente = (req, res = response) => {
 
     return clienteDB.save((error, clienteGuardado) => {
       if (error) {
+        const mappedError = mapMongoError(error);
+        if (mappedError) {
+          return res.status(mappedError.status).json({
+            message: mappedError.message,
+          });
+        }
         return res.status(500).json({
-          error: err.message.split(','),
+          error: error.message.split(','),
           message: 'No se puede guardar el cliente',
         });
       }

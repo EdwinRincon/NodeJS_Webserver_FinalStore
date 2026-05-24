@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
 
 const rolesValidos = {
   values: ['ADMIN_ROLE', 'USER_ROLE'],
@@ -50,5 +49,4 @@ UserSchema.methods.toJSON = function eliminarPwd() {
   return userObject;
 };
 
-UserSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
 module.exports = model('Usuario', UserSchema);

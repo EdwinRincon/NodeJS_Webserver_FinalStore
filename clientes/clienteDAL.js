@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
 
 const ClienteSchema = Schema({
   payer_id: {
@@ -40,5 +39,4 @@ ClienteSchema.methods.toJSON = function eliminarIDsV() {
   return clienteObject;
 };
 
-ClienteSchema.plugin(uniqueValidator, { message: '{PATH} debe de ser único' });
 module.exports = model('Cliente', ClienteSchema);

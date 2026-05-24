@@ -1,6 +1,7 @@
 const _ = require('underscore');
 const { response } = require('express');
 const Producto = require('./productoDAL');
+const { mapMongoError } = require('../database/errorMapper');
 
 const getProductos = async (req, res = response) => {
   let {
@@ -115,6 +116,12 @@ const postProducto = (req, res = response) => {
 
   producto.save((err, productoDB) => {
     if (err) {
+      const mappedError = mapMongoError(err);
+      if (mappedError) {
+        return res.status(mappedError.status).json({
+          message: mappedError.message,
+        });
+      }
       return res.status(400).json({
         error: err,
         message: 'Error al guardar el producto',
@@ -166,6 +173,12 @@ const putProducto = (req, res = response) => {
 
     return productoDB.save((error, productoGuardado) => {
       if (error) {
+        const mappedError = mapMongoError(error);
+        if (mappedError) {
+          return res.status(mappedError.status).json({
+            message: mappedError.message,
+          });
+        }
         return res.status(500).json({
           error,
           message: 'No se puede guardar el producto',
